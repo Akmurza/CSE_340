@@ -1,51 +1,26 @@
-/* ******************************************
- * This server.js file is the primary file of the 
- * application. It is used to control the project.
- *******************************************/
-/* ***********************
- * Require Statements
- *************************/
-const inventoryRoute = require("./routes/inventoryRoute");   // 
+const express = require("express");
+const expressLayouts = require("express-ejs-layouts");
+require("dotenv").config();
 
-const express = require("express")
-const expressLayouts = require("express-ejs-layouts")
-const env = require("dotenv").config()
-const app = express()
-const static = require("./routes/static")
-const baseController = require("./controllers/baseController")
+const static = require("./routes/static");
+const baseController = require("./controllers/baseController");
+const inventoryRoute = require("./routes/inventoryRoute");
 
+const app = express();
 
-/* ***********************
- * View Engine and Templates
- *************************/
-app.set("view engine", "ejs")
-app.use(expressLayouts)
-app.set("layout", "./layouts/layout") // not at views root
+app.set("view engine", "ejs");
+app.use(expressLayouts);
+app.set("layout", "./layouts/layout");
 
-/* ***********************
- * Routes
- *************************/
-app.use(static)
+app.use(express.static("public"));
+app.use(static);
 
-// Inventory routes
+app.get("/", baseController.buildHome);
+app.use("/inv", inventoryRoute);
 
+const PORT = process.env.PORT || 5500;
+const HOST = process.env.HOST || "0.0.0.0";
 
-/* ***********************
- * Local Server Information
- * Values from .env (environment) file
- *************************/
-const port = process.env.PORT
-const host = process.env.HOST
-
-/* ***********************
- * Log statement to confirm server operation
- *************************/
-app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`)
-})
-
-// Index route (главная страница)
-app.get("/", baseController.buildHome)
-app.use("/inv", inventoryRoute)
-
-
+app.listen(PORT, HOST, () => {
+  console.log(`Server is running on http://${HOST}:${PORT}`);
+});
