@@ -1,0 +1,80 @@
+-- 1. TYPE
+CREATE TYPE account_type_enum AS ENUM (
+  'Client',
+  'Employee',
+  'Admin'
+);
+
+-- 2. ACCOUNT TABLE
+CREATE TABLE account (
+  account_id SERIAL PRIMARY KEY,
+  account_firstname VARCHAR(50) NOT NULL,
+  account_lastname VARCHAR(50) NOT NULL,
+  account_email VARCHAR(100) UNIQUE NOT NULL,
+  account_password VARCHAR(255) NOT NULL,
+  account_type account_type_enum DEFAULT 'Client'
+);
+
+-- 3. CLASSIFICATION TABLE
+CREATE TABLE classification (
+  classification_id SERIAL PRIMARY KEY,
+  classification_name VARCHAR(50) NOT NULL
+);
+
+-- 4. INVENTORY TABLE
+CREATE TABLE inventory (
+  inv_id SERIAL PRIMARY KEY,
+  inv_make VARCHAR(50),
+  inv_model VARCHAR(50),
+  inv_description TEXT,
+  inv_image TEXT,
+  inv_thumbnail TEXT,
+  classification_id INT REFERENCES classification(classification_id)
+);
+
+-- 5. INSERT CLASSIFICATIONS
+INSERT INTO classification (classification_name)
+VALUES
+('Sport'),
+('SUV'),
+('Truck');
+
+-- 6. INSERT INVENTORY
+INSERT INTO inventory (
+  inv_make,
+  inv_model,
+  inv_description,
+  inv_image,
+  inv_thumbnail,
+  classification_id
+)
+VALUES
+(
+  'GM',
+  'Hummer',
+  'small interiors',
+  '/images/a-hummer.jpg',
+  '/images/a-hummer-tn.jpg',
+  3
+),
+(
+  'Ferrari',
+  'Roma',
+  'fast sport car',
+  '/images/a-roma.jpg',
+  '/images/a-roma-tn.jpg',
+  1
+);
+
+-- 4. Update GM Hummer description
+UPDATE inventory
+SET inv_description = REPLACE(inv_description, 'small interiors', 'a huge interior')
+WHERE inv_make = 'GM'
+  AND inv_model = 'Hummer';
+
+-- 6. Update image paths
+UPDATE inventory
+SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
+    inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/');
+
+
