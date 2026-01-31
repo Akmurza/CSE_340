@@ -1,0 +1,56 @@
+require('dotenv').config();
+const pool = require('./database');
+
+async function migrate() {
+  try {
+    console.log('Starting migration...');
+    
+    // Add columns
+    const addColumnsQuery = `
+      ALTER TABLE public.inventory
+      ADD COLUMN IF NOT EXISTS inv_price DECIMAL(10, 2),
+      ADD COLUMN IF NOT EXISTS inv_year INT,
+      ADD COLUMN IF NOT EXISTS inv_miles INT,
+      ADD COLUMN IF NOT EXISTS inv_color VARCHAR(50);
+    `;
+    await pool.query(addColumnsQuery);
+    console.log('✓ Columns added/verified');
+    
+    // Update Ferrari
+    const updateFerrariQuery = `
+      UPDATE public.inventory
+      SET inv_price = 150000.00,
+          inv_year = 2023,
+          inv_miles = 5000,
+          inv_color = 'Red'
+      WHERE inv_make = 'Ferrari' AND inv_model = 'Roma';
+    `;
+    await pool.query(updateFerrariQuery);
+    console.log('✓ Ferrari data updated');
+    
+    // Update Hummer
+    const updateHummerQuery = `
+      UPDATE public.inventory
+      SET inv_price = 12500.00,
+          inv_year = 2020,
+          inv_miles = 45678,
+          inv_color = 'Black'
+      WHERE inv_make = 'GM' AND inv_model = 'Hummer';
+    `;
+    await pool.query(updateHummerQuery);
+    console.log('✓ Hummer data updated');
+    
+    // Verify data
+    const verifyQuery = `SELECT * FROM public.inventory;`;
+    const result = await pool.query(verifyQuery);
+    console.log('✓ Migration complete. Current inventory:');
+    console.table(result.rows);
+    
+    process.exit(0);
+  } catch (error) {
+    console.error('✗ Migration failed:', error);
+    process.exit(1);
+  }
+}
+
+migrate();
