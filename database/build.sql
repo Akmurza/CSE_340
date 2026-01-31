@@ -29,6 +29,10 @@ CREATE TABLE inventory (
   inv_description TEXT,
   inv_image TEXT,
   inv_thumbnail TEXT,
+  inv_price DECIMAL(10, 2),
+  inv_year INT,
+  inv_miles INT,
+  inv_color VARCHAR(50),
   classification_id INT REFERENCES classification(classification_id)
 );
 
@@ -46,15 +50,23 @@ INSERT INTO inventory (
   inv_description,
   inv_image,
   inv_thumbnail,
+  inv_price,
+  inv_year,
+  inv_miles,
+  inv_color,
   classification_id
 )
 VALUES
 (
   'GM',
   'Hummer',
-  'small interiors',
+  'a huge interior',
   '/images/a-hummer.jpg',
   '/images/a-hummer-tn.jpg',
+  12500.00,
+  2020,
+  45678,
+  'Black',
   3
 ),
 (
@@ -63,16 +75,14 @@ VALUES
   'fast sport car',
   '/images/a-roma.jpg',
   '/images/a-roma-tn.jpg',
+  150000.00,
+  2023,
+  5000,
+  'Red',
   1
 );
 
--- 4. Update GM Hummer description
-UPDATE inventory
-SET inv_description = REPLACE(inv_description, 'small interiors', 'a huge interior')
-WHERE inv_make = 'GM'
-  AND inv_model = 'Hummer';
-
--- 6. Update image paths
+-- 7. Update image paths
 UPDATE inventory
 SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
     inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/');
