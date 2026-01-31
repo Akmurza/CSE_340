@@ -1,22 +1,20 @@
-require('dotenv').config();
-const pool = require('./database');
+require('dotenv').config()
+const pool = require('./database')
 
 async function migrate() {
   try {
-    console.log('Starting migration...');
+    console.log('Adding columns...')
     
-    // Add columns
     const addColumnsQuery = `
       ALTER TABLE public.inventory
       ADD COLUMN IF NOT EXISTS inv_price DECIMAL(10, 2),
       ADD COLUMN IF NOT EXISTS inv_year INT,
       ADD COLUMN IF NOT EXISTS inv_miles INT,
       ADD COLUMN IF NOT EXISTS inv_color VARCHAR(50);
-    `;
-    await pool.query(addColumnsQuery);
-    console.log('✓ Columns added/verified');
+    `
+    await pool.query(addColumnsQuery)
+    console.log('Columns updated')
     
-    // Update Ferrari
     const updateFerrariQuery = `
       UPDATE public.inventory
       SET inv_price = 150000.00,
@@ -24,11 +22,10 @@ async function migrate() {
           inv_miles = 5000,
           inv_color = 'Red'
       WHERE inv_make = 'Ferrari' AND inv_model = 'Roma';
-    `;
-    await pool.query(updateFerrariQuery);
-    console.log('✓ Ferrari data updated');
+    `
+    await pool.query(updateFerrariQuery)
+    console.log('Ferrari updated')
     
-    // Update Hummer
     const updateHummerQuery = `
       UPDATE public.inventory
       SET inv_price = 12500.00,
@@ -36,21 +33,20 @@ async function migrate() {
           inv_miles = 45678,
           inv_color = 'Black'
       WHERE inv_make = 'GM' AND inv_model = 'Hummer';
-    `;
-    await pool.query(updateHummerQuery);
-    console.log('✓ Hummer data updated');
+    `
+    await pool.query(updateHummerQuery)
+    console.log('Hummer updated')
     
-    // Verify data
-    const verifyQuery = `SELECT * FROM public.inventory;`;
-    const result = await pool.query(verifyQuery);
-    console.log('✓ Migration complete. Current inventory:');
-    console.table(result.rows);
+    const verifyQuery = `SELECT * FROM public.inventory;`
+    const result = await pool.query(verifyQuery)
+    console.log('Done')
+    console.table(result.rows)
     
-    process.exit(0);
+    process.exit(0)
   } catch (error) {
-    console.error('✗ Migration failed:', error);
-    process.exit(1);
+    console.error('Error:', error)
+    process.exit(1)
   }
 }
 
-migrate();
+migrate()

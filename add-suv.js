@@ -3,7 +3,7 @@ const pool = require('./database');
 
 async function addSUV() {
   try {
-    console.log('Adding SUV to inventory...');
+    console.log('Adding SUV...')
     
     const insertQuery = `
       INSERT INTO public.inventory (
@@ -31,23 +31,22 @@ async function addSUV() {
         2
       );
     `;
-    await pool.query(insertQuery);
-    console.log('✓ Cadillac Escalade added to SUV category');
+    await pool.query(insertQuery)
+    console.log('Escalade added')
     
-    // Verify data
     const verifyQuery = `
       SELECT i.inv_id, i.inv_make, i.inv_model, c.classification_name 
       FROM public.inventory i
       JOIN public.classification c ON i.classification_id = c.classification_id
       ORDER BY c.classification_name;
-    `;
-    const result = await pool.query(verifyQuery);
-    console.log('✓ Current inventory:');
-    console.table(result.rows);
+    `
+    const result = await pool.query(verifyQuery)
+    console.log('Inventory:')
+    console.table(result.rows)
     
-    process.exit(0);
+    process.exit(0)
   } catch (error) {
-    console.error('✗ Failed:', error.message);
+    console.error('Error:', error.message)
     process.exit(1);
   }
 }
