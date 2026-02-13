@@ -17,7 +17,7 @@ router.post(
 	asyncHandler(accountController.registerAccount)
 )
 
-router.get("/", asyncHandler(accountController.buildAccountManagement))
+router.get("/", utilities.checkLogin, asyncHandler(accountController.buildAccountManagement))
 
 router.post(
 	"/login",
