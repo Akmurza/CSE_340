@@ -6,8 +6,13 @@ const static = require("./routes/static");
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute");
 const accountRoute = require("./routes/accountRoute");
+const utilities = require("./utilities/")
 const asyncHandler = require("./middleware/asyncHandler");
 const bodyParser = require("body-parser")
+
+//w05
+const cookieParser = require("cookie-parser")
+
 
 //W04
 const session = require("express-session")
@@ -15,6 +20,8 @@ const pool = require('./database/')
 
 
 const app = express();
+
+
 
 
 /* ***********************
@@ -32,8 +39,8 @@ const app = express();
  }))
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
 
  
  // Express Messages Middleware W04
@@ -42,6 +49,8 @@ app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
+
+app.use(utilities.checkJWTToken)
 
 
 
@@ -84,6 +93,10 @@ app.use((err, req, res, next) => {
     }
   });
 });
+
+
+//w05
+app.use(cookieParser())
 
 const PORT = process.env.PORT || 5500;
 const HOST = process.env.HOST || "0.0.0.0";

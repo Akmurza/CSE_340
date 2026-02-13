@@ -17,4 +17,13 @@ router.post(
 	asyncHandler(accountController.registerAccount)
 )
 
+router.get("/", asyncHandler(accountController.buildAccountManagement))
+
+router.post(
+	"/login",
+	regValidate.loginRules(),
+	regValidate.checkLoginData,
+	asyncHandler(accountController.accountLogin)
+)
+
 module.exports = router
