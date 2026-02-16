@@ -66,6 +66,7 @@ invCont.buildDetailView = async function (req, res, next) {
       title: title,
       nav,
       detailView,
+      inv_id: vehicle.inv_id,
     })
   } catch (error) {
     next(error)

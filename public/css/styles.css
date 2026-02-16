@@ -513,3 +513,42 @@ footer {
     min-width: 300px;
   }
 }
+
+/* Wishlist styles */
+.wishlist-container {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.wishlist-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.wishlist-table th,
+.wishlist-table td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.wishlist-table a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #333;
+  text-decoration: none;
+}
+
+.wishlist-table img {
+  width: 80px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.wishlist-form {
+  margin-top: 1rem;
+}

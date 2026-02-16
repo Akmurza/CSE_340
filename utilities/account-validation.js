@@ -31,7 +31,14 @@ validate.registationRules = () => {
       .notEmpty()
       .isEmail()
       .normalizeEmail()
-      .withMessage("A valid email is required."),
+      .withMessage("A valid email is required.")
+      .custom(async (account_email) => {
+        const account = await accountModel.getAccountByEmail(account_email)
+        if (account) {
+          throw new Error("Email already exists. Please use a different email.")
+        }
+        return true
+      }),
 
     // password is required and must be strong password
     body("account_password")

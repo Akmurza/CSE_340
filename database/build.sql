@@ -28,6 +28,14 @@ CREATE TABLE inventory (
   inv_color VARCHAR(50),
   classification_id INT REFERENCES classification(classification_id)
 );
+-- 4a. WISHLIST TABLE
+CREATE TABLE wishlist (
+  wishlist_id SERIAL PRIMARY KEY,
+  account_id INT REFERENCES account(account_id) ON DELETE CASCADE,
+  inv_id INT REFERENCES inventory(inv_id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE (account_id, inv_id)
+);
 -- 5. INSERT CLASSIFICATIONS
 INSERT INTO classification (classification_name)
 VALUES ('Sport'),

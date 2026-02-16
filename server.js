@@ -6,6 +6,7 @@ const static = require("./routes/static");
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require("./routes/inventoryRoute");
 const accountRoute = require("./routes/accountRoute");
+const wishlistRoute = require("./routes/wishlistRoute");
 const utilities = require("./utilities/")
 const asyncHandler = require("./middleware/asyncHandler");
 const bodyParser = require("body-parser")
@@ -65,6 +66,7 @@ app.use(static);
 app.get("/", asyncHandler(baseController.buildHome));
 app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
+app.use("/wishlist", wishlistRoute);
 
 app.get("/error/500", (req, res, next) => {
   const error = new Error("Intentional Server Error");

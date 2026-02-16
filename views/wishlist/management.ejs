@@ -1,0 +1,40 @@
+<div class="wishlist-container">
+  <h1><%= title %></h1>
+
+  <div class="flash-message">
+    <%- messages() %>
+  </div>
+
+  <% if (items && items.length) { %>
+    <table class="wishlist-table">
+      <thead>
+        <tr>
+          <th>Vehicle</th>
+          <th>Price</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% items.forEach(item => { %>
+          <tr>
+            <td>
+              <a href="/inv/detail/<%= item.inv_id %>">
+                <img src="<%= item.inv_thumbnail %>" alt="<%= item.inv_make %> <%= item.inv_model %>">
+                <span><%= item.inv_make %> <%= item.inv_model %></span>
+              </a>
+            </td>
+            <td>$<%= new Intl.NumberFormat('en-US').format(item.inv_price) %></td>
+            <td>
+              <form action="/wishlist/remove" method="post">
+                <input type="hidden" name="inv_id" value="<%= item.inv_id %>">
+                <button type="submit">Remove</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="notice">No wishlist items yet.</p>
+  <% } %>
+</div>

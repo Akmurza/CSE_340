@@ -5,3 +5,12 @@
 <% } %>
 
 <%- detailView %>
+
+<% if (locals.loggedin) { %>
+    <form class="wishlist-form" action="/wishlist/add" method="post">
+        <input type="hidden" name="inv_id" value="<%= inv_id %>">
+        <button type="submit">Add to Wishlist</button>
+    </form>
+<% } else { %>
+    <p class="notice">Log in to save this vehicle.</p>
+<% } %>
