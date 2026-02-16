@@ -21,7 +21,6 @@ SET inv_price = 12500.00,
     inv_color = 'Black'
 WHERE inv_make = 'GM'
     AND inv_model = 'Hummer';
-
 -- Add wishlist table
 CREATE TABLE IF NOT EXISTS wishlist (
     wishlist_id SERIAL PRIMARY KEY,
